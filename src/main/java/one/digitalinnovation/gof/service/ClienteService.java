@@ -17,6 +17,8 @@ public interface ClienteService {
 
 	void inserir(Cliente cliente);
 
+	void create();
+
 	void atualizar(Long id, Cliente cliente);
 
 	void deletar(Long id);

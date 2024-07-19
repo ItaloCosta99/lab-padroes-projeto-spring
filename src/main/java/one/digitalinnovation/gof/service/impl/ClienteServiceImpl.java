@@ -1,5 +1,6 @@
 package one.digitalinnovation.gof.service.impl;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,10 @@ import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
 import one.digitalinnovation.gof.model.EnderecoRepository;
+import one.digitalinnovation.gof.model.pagamento.Boleto;
+import one.digitalinnovation.gof.model.pagamento.Cartao;
+import one.digitalinnovation.gof.model.pagamento.Debito;
+import one.digitalinnovation.gof.model.pagamento.Pix;
 import one.digitalinnovation.gof.service.ClienteService;
 import one.digitalinnovation.gof.service.ViaCepService;
 
@@ -29,7 +34,7 @@ public class ClienteServiceImpl implements ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private ViaCepService viaCepService;
-	
+
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
@@ -49,6 +54,19 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public void inserir(Cliente cliente) {
 		salvarClienteComCep(cliente);
+	}
+
+	@Override
+	public void create() {
+		Pix pix = new Pix(100, "Pagamento via Pix", "PIX", "chave-pix-123");
+		Boleto boleto = new Boleto(100, "Pagamento via Boleto", "BOLETO", "codigo-barras-123");
+		Cartao cartao = new Cartao(100, "Pagamento via Crédito", "CARTAO", "numero-cartao-123", "04/25", "123");
+		Debito debito = new Debito(100, "Pagamento via Débito", "DEBITO", "numero-cartao-456", "456");
+		Endereco endereco = new Endereco("59510000", "Rua do Cliente", "Complemento do Cliente", "Bairro do Cliente",
+				"Cidade do Cliente", "RN", "1234567", "1234567", "123", "123");
+		Cliente newCliente = new Cliente.Builder().nome("Italo").endereco(endereco)
+				.formaPagamentos(Arrays.asList(pix, boleto, cartao, debito)).build();
+		salvarClienteComCep(newCliente);
 	}
 
 	@Override

@@ -44,6 +44,12 @@ public class ClienteRestController {
 		return ResponseEntity.ok(cliente);
 	}
 
+	@PostMapping("/create")
+	public ResponseEntity<Cliente> create() {
+		clienteService.create();
+		return ResponseEntity.ok().build();
+	}
+
 	@PutMapping("/{id}")
 	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
 		clienteService.atualizar(id, cliente);
